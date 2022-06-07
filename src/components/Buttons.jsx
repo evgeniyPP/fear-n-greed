@@ -1,10 +1,10 @@
 import { TYPES } from '../App';
 
-export default function Buttons({ setType }) {
+export function Buttons() {
   return (
     <span className="buttons">
-      <button onClick={() => setType(TYPES.Stocks)}>Stocks</button>
-      <button onClick={() => setType(TYPES.Crypto)}>Crypto</button>
+      <a href="/">Stocks</a>
+      <a href={`/?type=${TYPES.Crypto}`}>Crypto</a>
     </span>
   );
 }

@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import Buttons from './components/Buttons';
+import { Buttons } from './components/Buttons';
 import { Dial } from './components/Dial';
 import { Hand } from './components/Hand';
+import { getQueryVariable } from './functions';
 
 const LABELS = ['extreme fear', 'fear', 'neutral', 'greed', 'extreme greed'];
 const LABEL_VALUES = [25, 46, 55, 75, 100];
 export const TYPES = { Stocks: 'Stocks', Crypto: 'Crypto' };
 
 function App() {
-  const [type, setType] = useState('Stocks');
+  const [type, setType] = useState(TYPES.Stocks);
   const [score, setScore] = useState(null);
   const [label, setLabel] = useState(null);
 
@@ -25,12 +26,13 @@ function App() {
       setScore(+json.data[0].value);
     };
 
-    if (type === TYPES.Stocks) {
-      fetchStocksScore().catch(console.error);
-    } else if (type === TYPES.Crypto) {
+    if (getQueryVariable('type') === TYPES.Crypto) {
       fetchCryptoScore().catch(console.error);
+      setType(TYPES.Crypto);
+    } else {
+      fetchStocksScore().catch(console.error);
     }
-  }, [type]);
+  }, []);
 
   useEffect(() => {
     if (!score) {
@@ -44,7 +46,7 @@ function App() {
   return (
     <>
       <div className="header">
-        <Buttons setType={setType} />
+        <Buttons />
         <h1>{type} Fear &amp; Greed Index</h1>
       </div>
 
